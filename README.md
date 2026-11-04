@@ -6,6 +6,15 @@ verify the extraction against the running balance, classify each transaction **w
 
 > Built for the Befree assessment. Everything runs locally; no external API is called.
 
+## 🌐 Live demo: https://bank-statement-processor-7cft.onrender.com
+
+No PDF needed: use **"Try a sample"** on the right of the page (text, scanned, mixed and password-protected
+samples are included; the protected one's password is `RAHU1990` and is filled in automatically).
+
+> ⏳ Hosted on Render's **free tier** (0.1 CPU, 512 MB): the first visit after ~15 min idle takes
+> **30–60 s to wake up**. Text PDFs process in about a second; **scanned PDFs take ~20 s per page** there
+> (≈4 s per page on a laptop) because OCR is CPU-bound.
+
 ---
 
 ## ✨ Features
