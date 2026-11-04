@@ -3,11 +3,13 @@ End-to-end pipeline:  PDF bytes -> StatementResult (account details + validated,
 """
 from __future__ import annotations
 
+from datetime import date
+
 from .account import extract_account
 from .layout import char_width, group_lines, parse_fallback, parse_with_header
 from .loader import NotAStatement, extract_pages, open_pdf
 from .models import StatementResult
-from .validator import choose_order, reconcile, remove_duplicates, resolve_directions, _chain_score
+from .validator import _chain_score, check_dates, choose_order, reconcile, remove_duplicates, resolve_directions
 
 LOW_OCR_CONFIDENCE = 60
 
@@ -51,6 +53,10 @@ def process_pdf(data: bytes, filename: str = "statement.pdf", password: str | No
     if dupes:
         warnings.append(f"{dupes} duplicate row(s) removed (repeated page or overlapping data).")
     txns, reversed_ = choose_order(txns, opening)
+    pf, pt = account.get("period_from"), account.get("period_to")
+    fixed = check_dates(txns, date.fromisoformat(pf) if pf else None, date.fromisoformat(pt) if pt else None)
+    if fixed:
+        warnings.append(f"{fixed} date(s) looked misread (outside period / out of order) - corrected or flagged.")
     resolve_directions(txns, opening)
     closing_stated = account.get("closing_balance") or parser.closing
     recon = reconcile(txns, opening, closing_stated)

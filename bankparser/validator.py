@@ -57,6 +57,35 @@ def remove_duplicates(txns):
     return out, removed
 
 
+def check_dates(txns, period_from=None, period_to=None) -> int:
+    """OCR can misread a date into another VALID date (05 -> 08). A date outside the statement
+    period, or out of order with both neighbours, is repaired from the value date when that one
+    is plausible, otherwise flagged. Returns the number of rows touched."""
+    def plausible(d, lo, hi):
+        if d is None:
+            return False
+        if period_from and period_to and not (period_from <= d <= period_to):
+            return False
+        return (lo is None or d >= lo) and (hi is None or d <= hi)
+
+    touched = 0
+    for i, t in enumerate(txns):
+        if t.date is None:
+            continue
+        prev = next((x.date for x in reversed(txns[:i]) if x.date), None)
+        nxt = next((x.date for x in txns[i + 1:] if x.date), None)
+        neighbours_ok = prev is not None and nxt is not None and prev <= nxt
+        if plausible(t.date, prev if neighbours_ok else None, nxt if neighbours_ok else None):
+            continue
+        if plausible(t.value_date, prev if neighbours_ok else None, nxt if neighbours_ok else None):
+            t.date = t.value_date
+            t.flags.append("date_corrected_from_value_date")
+        else:
+            t.flags.append("date_suspect")
+        touched += 1
+    return touched
+
+
 def resolve_directions(txns, opening):
     prev = opening
     for t in txns:

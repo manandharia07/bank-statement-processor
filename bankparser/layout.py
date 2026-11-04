@@ -297,6 +297,16 @@ def join_fragments(frags: list[tuple[str, float]], right_edge: float, cw: float)
         last_word = out.split(" ")[-1]
         glued = right_edge - prev_x1 < 2.5 * cw and len(last_word) >= 6
         out = out + ("" if glued else " ") + t
+    return clean_description(out)
+
+
+_OCR_JUNK_TOKEN = re.compile(r"^[~=_|;:'\"`—–‘’“”•.,]+$")
+
+
+def clean_description(text: str) -> str:
+    """Remove OCR specks: symbol-only tokens like '~~' / '—' / '=' and junk before the first letter/digit."""
+    tokens = [t for t in text.split() if not _OCR_JUNK_TOKEN.match(t)]
+    out = re.sub(r"^[^A-Za-z0-9(]+", "", " ".join(tokens))
     return re.sub(r"\s+", " ", out).strip()
 
 

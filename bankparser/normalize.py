@@ -39,7 +39,7 @@ def parse_date(text: str) -> date | None:
     """Parse a day-first date (Indian convention). Returns None when the text is not a date."""
     if not text:
         return None
-    s = text.strip().strip(",;:")
+    s = text.strip().strip(",;:.'`|_~-\"")       # OCR specks around the date, e.g. '11/04/24.'
     if len(s) < 6 or len(s) > 20:
         return None
     for candidate in (s, _ocr_fix_date(s)):

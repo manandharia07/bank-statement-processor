@@ -52,3 +52,20 @@ def test_missing_opening_inferred():
     tx = [T(1, debit=100, balance=900), T(2, debit=100, balance=800)]
     r = reconcile(tx, None)
     assert r["opening_balance"] == 1000 and r["match_rate"] == 100.0
+
+
+def test_misread_date_repaired_from_value_date():
+    from bankparser.validator import check_dates
+    tx = [T(5), T(6), T(7), T(9)]
+    tx[2].date = date(2024, 8, 7)               # OCR: 07/04 read as 07/08
+    tx[2].value_date = date(2024, 4, 7)
+    assert check_dates(tx, date(2024, 4, 1), date(2024, 4, 30)) == 1
+    assert tx[2].date == date(2024, 4, 7) and "date_corrected_from_value_date" in tx[2].flags
+
+
+def test_misread_date_flagged_without_value_date():
+    from bankparser.validator import check_dates
+    tx = [T(5), T(6), T(7)]
+    tx[1].date = date(2024, 9, 6)
+    check_dates(tx)
+    assert "date_suspect" in tx[1].flags

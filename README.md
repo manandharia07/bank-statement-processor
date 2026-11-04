@@ -33,7 +33,8 @@ verify the extraction against the running balance, classify each transaction **w
 - ❓ **No Dr/Cr marker at all**: direction worked out from the balance change
 - ⬇️ **Newest-first statements**: detected (balances only reconcile in one direction) and re-ordered
 - 🇮🇳 Indian number format `1,23,456.78`, many date formats (`01/04/24`, `05-Apr-2024`, `28.06.2024`…)
-- 🔤 OCR mistakes in numbers/dates (`O`→`0`, `,`↔`.`)
+- 🔤 OCR mistakes in numbers/dates (`O`→`0`, `,`↔`.`, stray specks), plus misread-but-valid dates
+  (e.g. `05`→`08`) caught by period/order checks and repaired from the value date
 - 🧮 Opening balance / `Balance B/F` / `C/F` / totals / page footers are not mistaken for transactions
 - 🧩 Missing opening balance (inferred), swapped Dr/Cr (auto-corrected), missing amount (inferred from balance)
 - 👯 Duplicate rows from repeated pages, and **overlapping statements** when several files are uploaded
@@ -114,8 +115,18 @@ narrations (UPI, NEFT, IMPS, POS, ATM, NACH, BBPS formats) for 23 categories. Ev
 | sahyadri_bank | text, 2-line header, newest-first, `Cr` suffix | 55/55 | 100% | 100% |
 | indus_valley_bank | text, Amount + Dr/Cr col, B/F–C/F, header on page 1 only | 56/56 | 100% | 100% |
 | sahyadri_bank_protected | password protected | 55/55 | 100% | 100% |
-| navyug_bank_scanned | image-only, tilted, noisy | _see below_ | | |
-| indus_valley_bank_mixed | page 1 text, page 2 scanned | _see below_ | | |
+| navyug_bank_scanned | image-only (OCR), tilted, noisy JPEG | 50/50 | 100% (descriptions 99.6% char-similar) | 100% |
+| indus_valley_bank_mixed | page 1 text, page 2 scanned | 56/56 | 100% | 100% |
+
+**OCR stress tests** (same statement re-scanned under harder conditions):
+
+| Condition | Rows | All numbers exact | Balance check | What handled it |
+|---|---|---|---|---|
+| 2.5° tilt | 50/50 | 50/50 | 100% | projection-profile deskew (detected −2.5° exactly) |
+| page scanned sideways (90°) | 50/50 | 50/50 | 100% | Tesseract orientation detection |
+| 150 dpi, noisy | 50/50 | 50/50 | 100% | one unreadable amount **inferred from balance**, one misread date **repaired from value date** |
+
+OCR speed: ~4–5 s per scanned page on a laptop CPU (text pages are instant).
 
 **Classification** (`python -m bankparser.classify.train`, held-out merchants, 1,840 test rows):
 
@@ -170,7 +181,7 @@ python -m bankparser samples/sahyadri_bank_protected.pdf --password RAHU1990 -o 
 python -m synthetic.make_statements          # sample PDFs + ground truth (samples/)
 python -m bankparser.classify.train          # evaluate 4 models, train final model -> models/
 python -m scripts.evaluate_extraction -v     # extraction accuracy vs ground truth
-pytest -q                                    # 58 tests
+pytest -q                                    # 60 tests
 ```
 
 ### 6. Docker / Render deployment
