@@ -1,0 +1,7 @@
+.venv
+.git
+.claude
+__pycache__
+.pytest_cache
+outputs
+data/feedback/*.csv

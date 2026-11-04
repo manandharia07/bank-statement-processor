@@ -1,0 +1,209 @@
+{
+  "train_rows": 6900,
+  "test_rows": 1840,
+  "models": {
+    "logreg": {
+      "accuracy": 0.7234,
+      "macro_f1": 0.7152,
+      "train_seconds": 2.1
+    },
+    "linear_svm": {
+      "accuracy": 0.7304,
+      "macro_f1": 0.7284,
+      "train_seconds": 1.4
+    },
+    "naive_bayes": {
+      "accuracy": 0.7125,
+      "macro_f1": 0.6787,
+      "train_seconds": 0.5
+    },
+    "random_forest": {
+      "accuracy": 0.6957,
+      "macro_f1": 0.6866,
+      "train_seconds": 2.6
+    }
+  },
+  "rules": {
+    "coverage": 0.875,
+    "precision": 0.9988
+  },
+  "hybrid": {
+    "accuracy": 0.9647,
+    "macro_f1": 0.9356,
+    "uncategorized_rate": 0.0266
+  },
+  "hybrid_per_class": {
+    "Bank Charges": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Cash Deposit": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Cash Withdrawal": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Credit Card Payment": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "EMI & Loans": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Education": {
+      "precision": 1.0,
+      "recall": 0.9625,
+      "f1-score": 0.9808917197452229,
+      "support": 80.0
+    },
+    "Entertainment & Subscriptions": {
+      "precision": 1.0,
+      "recall": 0.9875,
+      "f1-score": 0.9937106918238994,
+      "support": 80.0
+    },
+    "Food & Dining": {
+      "precision": 0.9701492537313433,
+      "recall": 0.8125,
+      "f1-score": 0.8843537414965986,
+      "support": 80.0
+    },
+    "Fuel": {
+      "precision": 1.0,
+      "recall": 0.9875,
+      "f1-score": 0.9937106918238994,
+      "support": 80.0
+    },
+    "Groceries": {
+      "precision": 1.0,
+      "recall": 0.975,
+      "f1-score": 0.9873417721518988,
+      "support": 80.0
+    },
+    "Healthcare": {
+      "precision": 1.0,
+      "recall": 0.725,
+      "f1-score": 0.8405797101449275,
+      "support": 80.0
+    },
+    "Insurance": {
+      "precision": 0.8602150537634409,
+      "recall": 1.0,
+      "f1-score": 0.9248554913294798,
+      "support": 80.0
+    },
+    "Interest & Dividends": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Investments": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Refunds & Cashback": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Rent": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Salary": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Shopping": {
+      "precision": 1.0,
+      "recall": 0.775,
+      "f1-score": 0.8732394366197183,
+      "support": 80.0
+    },
+    "Taxes": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Transfer In": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 80.0
+    },
+    "Transfer Out": {
+      "precision": 0.9876543209876543,
+      "recall": 1.0,
+      "f1-score": 0.9937888198757764,
+      "support": 80.0
+    },
+    "Travel & Transport": {
+      "precision": 1.0,
+      "recall": 0.9875,
+      "f1-score": 0.9937106918238994,
+      "support": 80.0
+    },
+    "Uncategorized": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 0.0
+    },
+    "Utilities & Bills": {
+      "precision": 1.0,
+      "recall": 0.975,
+      "f1-score": 0.9873417721518988,
+      "support": 80.0
+    },
+    "accuracy": 0.9646739130434783,
+    "macro avg": {
+      "precision": 0.9507507761867683,
+      "recall": 0.9244791666666666,
+      "f1-score": 0.9355635224578007,
+      "support": 1840.0
+    },
+    "weighted avg": {
+      "precision": 0.9920877664557581,
+      "recall": 0.9646739130434783,
+      "f1-score": 0.9762401973472705,
+      "support": 1840.0
+    }
+  },
+  "top_confusions": [
+    "Shopping -> Uncategorized: 18",
+    "Food & Dining -> Uncategorized: 14",
+    "Healthcare -> Insurance: 13",
+    "Healthcare -> Uncategorized: 9",
+    "Education -> Uncategorized: 3",
+    "Groceries -> Food & Dining: 2",
+    "Utilities & Bills -> Uncategorized: 2",
+    "Food & Dining -> Transfer Out: 1"
+  ],
+  "final_model": {
+    "rows": 6900,
+    "feedback_rows": 0,
+    "categories": 23
+  }
+}

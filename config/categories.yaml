@@ -1,0 +1,143 @@
+# ---------------------------------------------------------------------------
+# Transaction categories and keyword rules (heuristic layer of the classifier)
+#
+# * `categories` : every category and the money direction it allows
+#                  (debit / credit / any). The ML layer also respects this,
+#                  e.g. a CREDIT can never be predicted as "Food & Dining".
+# * `rules`      : checked TOP TO BOTTOM, first match wins, so put specific
+#                  rules (refunds, credit-card bills) above generic ones.
+#     keywords   : whole-word match after normalisation (case-insensitive,
+#                  '/', '-', '@', '.' treated as spaces). Keywords of 6+
+#                  letters also match inside joined text (e.g. "zomato12@ybl").
+#     patterns   : optional regular expressions on the normalised text.
+#     direction  : optional - rule only applies to debits or credits.
+#
+# Adding a category or keyword needs NO code change - edit this file.
+# ---------------------------------------------------------------------------
+categories:
+  Food & Dining: debit
+  Groceries: debit
+  Shopping: debit
+  Travel & Transport: debit
+  Fuel: debit
+  Utilities & Bills: debit
+  Rent: debit
+  EMI & Loans: debit
+  Credit Card Payment: debit
+  Insurance: debit
+  Investments: debit
+  Healthcare: debit
+  Education: debit
+  Entertainment & Subscriptions: debit
+  Cash Withdrawal: debit
+  Bank Charges: debit
+  Taxes: debit
+  Transfer Out: debit
+  Salary: credit
+  Interest & Dividends: credit
+  Refunds & Cashback: credit
+  Cash Deposit: credit
+  Transfer In: credit
+  Uncategorized: any
+
+rules:
+  - category: Refunds & Cashback
+    direction: credit
+    keywords: [REFUND, CASHBACK, REVERSAL, CHARGES REVERSAL, REV UPI, REVERSED]
+    patterns: ['^REV\b']
+
+  - category: Salary
+    direction: credit
+    keywords: [SALARY, SAL, PAYROLL, SALARY CREDIT, STIPEND]
+
+  - category: Interest & Dividends
+    direction: credit
+    keywords: [INTEREST, INT PD, SB INT, CREDIT INTEREST, DIVIDEND, DIV, INTEREST CAPITALISED, CAPITALISED]
+
+  - category: Cash Deposit
+    direction: credit
+    keywords: [CASH DEPOSIT, CASH DEP, BY CASH, CDM DEPOSIT, CDM]
+
+  - category: Bank Charges
+    direction: debit
+    keywords: [CHARGES, CHARGE, CHGS, CHRGS, ANNUAL FEE, AMC, MIN BAL, NON MAINTENANCE, SMS ALERT,
+               DEBIT CARD FEE, SERVICE CHARGES, CHQ BOOK, PENAL]
+
+  - category: Taxes
+    direction: debit
+    keywords: [INCOME TAX, ADVANCE TAX, TDS, GST PAYMENT, PROFESSIONAL TAX, CBDT, ITNS280, ITNS, SELF ASSESSMENT TAX,
+               PROPERTY TAX, TAX PAYMENT, CHALLAN]
+
+  - category: Credit Card Payment
+    direction: debit
+    keywords: [CREDIT CARD, CC PAYMENT, CC BILL, CRED CLUB, CARD BILL, BILLPAY DR, CCPAY, CC AUTOPAY]
+
+  - category: Cash Withdrawal
+    direction: debit
+    keywords: [ATM WDL, ATM CASH, NWD, ATW, CASH WDL, CASH WITHDRAWAL, ATM WITHDRAWAL, SELF]
+    patterns: ['^ATM\b']
+
+  - category: Rent
+    direction: debit
+    keywords: [RENT, HOUSE RENT, NOBROKER RENT, CRED RENT]
+
+  - category: Insurance
+    direction: debit
+    keywords: [INSURANCE, PREMIUM, LIC OF INDIA, HDFC LIFE, ICICI PRULIFE, SBI LIFE, MAX LIFE, STAR HEALTH,
+               POLICYBAZAAR, BAJAJ ALLIANZ, TATA AIG, NIVA BUPA, ACKO, DIGIT INSURANCE]
+
+  - category: Investments
+    direction: debit
+    keywords: [SIP, MUTUAL FUND, MF, ZERODHA, GROWW, UPSTOX, ANGEL ONE, KUVERA, PAYTM MONEY, BSE LIMITED,
+               INDIAN CLEARING CORP, PPF, RD INSTALLMENT, FD BOOKED, NPS TRUST, ICICI SECURITIES, NIPPON INDIA]
+
+  - category: EMI & Loans
+    direction: debit
+    keywords: [EMI, LOAN, LOAN RECOVERY, BAJAJ FINANCE, HOME CREDIT, TATA CAPITAL, MUTHOOT FINANCE,
+               LIC HOUSING FINANCE, FULLERTON, MAHINDRA FINANCE, HDFC LTD]
+
+  - category: Groceries
+    direction: debit
+    keywords: [BIGBASKET, BLINKIT, ZEPTO, DMART, AVENUE SUPERMARTS, RELIANCE FRESH, MORE RETAIL, SPENCERS, JIOMART,
+               NATURES BASKET, GROFERS, STAR BAZAAR, INSTAMART, DUNZO, SUPERMARKET, GROCERY, KIRANA]
+
+  - category: Food & Dining
+    direction: debit
+    keywords: [SWIGGY, ZOMATO, DOMINOS, MCDONALDS, KFC, STARBUCKS, HALDIRAMS, BARBEQUE NATION, CAFE COFFEE DAY,
+               BURGER KING, PIZZA HUT, CHAAYOS, BEHROUZ, FAASOS, SUBWAY, RESTAURANT, CAFE, BIRYANI, EATSURE,
+               THEOBROMA, BAKERY, FOODS, DHABA]
+
+  - category: Fuel
+    direction: debit
+    keywords: [INDIAN OIL, IOCL, HPCL, BPCL, BHARAT PETROLEUM, SHELL, NAYARA, PETROL, FUEL, FILLING STATION, JIO BP]
+
+  - category: Travel & Transport
+    direction: debit
+    keywords: [UBER, OLA, OLA CABS, RAPIDO, IRCTC, MAKEMYTRIP, GOIBIBO, INDIGO, AIR INDIA, REDBUS, YATRA, CLEARTRIP,
+               METRO, FASTAG, IXIGO, VISTARA, AKASA, NAMMA YATRI, BLUSMART, TOLL, RAILWAY, AIRLINES]
+
+  - category: Utilities & Bills
+    direction: debit
+    keywords: [ELECTRICITY, MSEDCL, BESCOM, TATA POWER, ADANI ELECTRICITY, TNEB, BSES, TORRENT POWER, AIRTEL, JIO,
+               VODAFONE, IDEA, BSNL, FIBERNET, BROADBAND, MAHANAGAR GAS, INDANE, GAS, WATER, DTH, TATA PLAY, RECHARGE,
+               BBPS, BPAY, BILLPAY, POSTPAID, PREPAID]
+
+  - category: Healthcare
+    direction: debit
+    keywords: [PHARMACY, APOLLO, MEDPLUS, PHARMEASY, NETMEDS, 1MG, HOSPITAL, HEALTHCARE, PRACTO, PATHLABS, THYROCARE,
+               CLINIC, DIAGNOSTIC, MEDICAL, CHEMIST, LABS]
+
+  - category: Education
+    direction: debit
+    keywords: [BYJUS, UNACADEMY, COURSERA, UDEMY, VEDANTU, CHEGG, UPGRAD, SIMPLILEARN, SCHOOL, COLLEGE, UNIVERSITY,
+               FEES, TUITION, ACADEMY, PHYSICS WALLAH, GREAT LEARNING]
+
+  - category: Entertainment & Subscriptions
+    direction: debit
+    keywords: [NETFLIX, SPOTIFY, HOTSTAR, PRIME VIDEO, BOOKMYSHOW, PVR, INOX, YOUTUBE, SONYLIV, ZEE5, JIOCINEMA,
+               APPLE MEDIA, GOOGLE PLAY, STEAM, AUDIBLE, DISNEY]
+
+  - category: Shopping
+    direction: debit
+    keywords: [AMAZON, FLIPKART, MYNTRA, AJIO, NYKAA, MEESHO, CROMA, RELIANCE DIGITAL, DECATHLON, LIFESTYLE,
+               SHOPPERS STOP, IKEA, TATA CLIQ, PANTALOONS, WESTSIDE, LENSKART, FIRSTCRY, PEPPERFRY, MALL, RETAIL]

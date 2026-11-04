@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: bank-statement-processor
+    runtime: docker
+    plan: free
+    healthCheckPath: /_stcore/health
+    autoDeploy: true

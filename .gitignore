@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+outputs/
+data/feedback/*.csv
+!data/feedback/.gitkeep
+.streamlit/secrets.toml
+.claude/
