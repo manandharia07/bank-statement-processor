@@ -1,5 +1,4 @@
-"""
-Streamlit UI - upload bank statements, review extraction + classification, correct, export.
+"""Bank Statement Processing & Classification System - Streamlit UI: upload bank statements, review extraction + classification, correct, export.
 
 Run:  streamlit run app.py
 """
@@ -18,7 +17,7 @@ from bankparser.export import ACCOUNT_LABELS, to_csv, to_excel, transactions_df
 from bankparser.normalize import fmt_inr
 from bankparser.ocr import tesseract_available
 
-st.set_page_config(page_title="Bank Statement Processor", page_icon="🏦", layout="wide")
+st.set_page_config(page_title="Bank Statement Processing & Classification System", page_icon="🏦", layout="wide")
 SAMPLES = Path(__file__).parent / "samples"
 SAMPLE_PASSWORD = "RAHU1990"     # password of the generated sample samples/sahyadri_bank_protected.pdf
 
@@ -62,7 +61,7 @@ with st.sidebar:
         ss.results, ss.errors, ss.need_pw = {}, {}, {}
         st.rerun()
 
-st.title("🏦 Bank Statement Processing & Classification")
+st.title("🏦 Bank Statement Processing & Classification System")
 st.caption("Text & scanned PDFs · any bank layout · balance-verified extraction · "
            "rule + ML classification (no LLM) · Excel / CSV export")
 

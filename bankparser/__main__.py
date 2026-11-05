@@ -15,7 +15,7 @@ from .export import to_csv, to_excel, transactions_df
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="bankparser", description="Extract + classify bank statement PDFs.")
+    ap = argparse.ArgumentParser(prog="bankparser", description="Bank Statement Processing & Classification System - extract + classify bank statement PDFs.")
     ap.add_argument("pdfs", nargs="+", type=Path)
     ap.add_argument("-o", "--output", type=Path, default=Path("statement_processed.xlsx"))
     ap.add_argument("--csv", type=Path)

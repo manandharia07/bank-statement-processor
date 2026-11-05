@@ -1,4 +1,4 @@
-"""Bank statement processing & classification (no LLMs)."""
+"""Bank Statement Processing & Classification System - extraction and classification of bank statement PDFs (no LLMs)."""
 from .loader import InvalidPDF, NotAStatement, PasswordRequired, StatementError, WrongPassword
 from .pipeline import process_pdf
 
